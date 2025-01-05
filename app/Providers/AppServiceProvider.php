@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Finder\Glob;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        $migrationPath = database_path('migrations');
+        
+        $directories = glob($migrationPath . "/*", GLOB_ONLYDIR);
+
+        $paths = array_merge([$migrationPath], $directories);
+
+        $this->loadMigrationsFrom($paths)
     }
 }
