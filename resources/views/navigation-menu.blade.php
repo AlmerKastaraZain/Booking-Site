@@ -10,34 +10,71 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                @if (Auth::user()->type === 'admin')
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 md:flex">
+                        <x-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('admin.managevendor') }}" :active="request()->routeIs('admin.managevendor')">
+                            {{ __('Manage Vendor') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('admin.manageguest') }}" :active="request()->routeIs('admin.manageguest')">
+                            {{ __('Manage Guest') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('admin.manageadmin') }}" :active="request()->routeIs('admin.manageadmin')">
+                            {{ __('Manage Admin') }}
+                        </x-nav-link>
+                        
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('admin.manageproperty') }}" :active="request()->routeIs('admin.manageproperty')">
+                            {{ __('Manage Property') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('admin.analytics') }}" :active="request()->routeIs('admin.analytics')">
+                            {{ __('Analytics') }}
+                        </x-nav-link>
+                    </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                        {{ __('Documentation') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('listing') }}" :active="request()->routeIs('listing')">
-                        {{ __('Listing') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics')">
-                        {{ __('Analytics') }}
-                    </x-nav-link>
-                </div>
+                @else
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                            {{ __('Documentation') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('listing') }}" :active="request()->routeIs('listing', 'singlerental', 'multirental')">
+                            {{ __('Listing') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics')">
+                            {{ __('Analytics') }}
+                        </x-nav-link>
+                    </div>
+                @endif
+                
+
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <!-- Teams Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->type !== 'admin')
                     <div class="ms-3 relative">
                         <x-dropdown align="right" width="60">
                             <x-slot name="trigger">
@@ -155,26 +192,60 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
-                {{ __('Documentation') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('listing') }}" :active="request()->routeIs('listing')">
-                {{ __('Listing') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics')">
-                {{ __('Analytics') }}
-            </x-responsive-nav-link>
-        </div>
+        @if (Auth::user()->type === 'admin')
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            </div>          
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.managevendor') }}" :active="request()->routeIs('admin.managevendor')">
+                    {{ __('Manage Vendor') }}
+                </x-responsive-nav-link>
+            </div>  
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.manageadmin') }}" :active="request()->routeIs('admin.manageadmin')">
+                    {{ __('Manage Admin') }}
+                </x-responsive-nav-link>
+            </div>  
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.manageguest') }}" :active="request()->routeIs('admin.manageguest')">
+                    {{ __('Manage Guest') }}
+                </x-responsive-nav-link>
+            </div>  
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.manageproperty') }}" :active="request()->routeIs('admin.manageproperty')">
+                    {{ __('Manage Property') }}
+                </x-responsive-nav-link>
+            </div>          
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('admin.analytics') }}" :active="request()->routeIs('admin.analytics')">
+                    {{ __('Analytics') }}
+                </x-responsive-nav-link>
+            </div>          
+        @else
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+            </div>
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('documentation') }}" :active="request()->routeIs('documentation')">
+                    {{ __('Documentation') }}
+                </x-responsive-nav-link>
+            </div>
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('listing') }}" :active="request()->routeIs('listing')">
+                    {{ __('Listing') }}
+                </x-responsive-nav-link>
+            </div>
+            <div class="pt-2 pb-3 space-y-1">
+                <x-responsive-nav-link href="{{ route('analytics') }}" :active="request()->routeIs('analytics')">
+                    {{ __('Analytics') }}
+                </x-responsive-nav-link>
+            </div>
+        @endif
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -214,7 +285,7 @@
                 </form>
 
                 <!-- Team Management -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures() && Auth::user()->type !== 'admin' )
                     <div class="border-t border-gray-200"></div>
 
                     <div class="block px-4 py-2 text-xs text-gray-400">

@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\PropertyType;
+use App\Models\User;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Finder\Glob;
+use Laravel\Cashier\Cashier;
+use Stripe\Stripe;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +17,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+
+
     }
 
     /**
@@ -20,12 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useTailwind();
+        Cashier::calculateTaxes();
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        // Allow migration to read folders
         $migrationPath = database_path('migrations');
-        
         $directories = glob($migrationPath . "/*", GLOB_ONLYDIR);
-
         $paths = array_merge([$migrationPath], $directories);
+        $this->loadMigrationsFrom($paths);
 
-        $this->loadMigrationsFrom($paths)
     }
 }

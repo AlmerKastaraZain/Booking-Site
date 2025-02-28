@@ -37,9 +37,7 @@ class FortifyServiceProvider extends ServiceProvider
             $user = User::where(
                 'email',
                 $request->email
-            )->orWhere('b',1);
-
-            $user_type = $user !== null ? $user->type : null;
+            )->orWhere('name',$request->email)->first();
 
             if ($user &&
                 Hash::check($request->password, $user->password)) {

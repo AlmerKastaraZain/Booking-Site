@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Lanos\CashierConnect\Billable;
+use Lanos\CashierConnect\Contracts\StripeAccount;
+use Laravel\Cashier\Billable as CashierBillable;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
